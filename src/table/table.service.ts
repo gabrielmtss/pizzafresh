@@ -34,12 +34,6 @@ export class TableService {
     return this.prisma.table.create({ data }).catch(this.handleError);
   }
 
-  handleError(error: Error) {
-    console.log(error.message);
-
-    return undefined;
-  }
-
   async update(id: string, dto: UpdateTableDto): Promise<Table> {
     await this.findById(id);
 
@@ -55,5 +49,11 @@ export class TableService {
     await this.findById(id);
 
     await this.prisma.table.delete({ where: { id } });
+  }
+
+  handleError(error: Error) {
+    console.log(error.message);
+
+    return undefined;
   }
 }
