@@ -1,8 +1,9 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { CreateTableDto } from './dto/create-table.dto';
-import { Table } from './entities/table.entity';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { handleError } from 'src/utils/handle-error.util';
+import { CreateTableDto } from './dto/create-table.dto';
 import { UpdateTableDto } from './dto/update-table.dto';
+import { Table } from './entities/table.entity';
 
 @Injectable()
 
@@ -31,7 +32,7 @@ export class TableService {
   create(dto: CreateTableDto): Promise<Table> {
     const data: Table = { ...dto };
 
-    return this.prisma.table.create({ data }).catch(this.handleError);
+    return this.prisma.table.create({ data }).catch(handleError);
   }
 
   async update(id: string, dto: UpdateTableDto): Promise<Table> {
@@ -49,11 +50,5 @@ export class TableService {
     await this.findById(id);
 
     await this.prisma.table.delete({ where: { id } });
-  }
-
-  handleError(error: Error) {
-    console.log(error.message);
-
-    return undefined;
   }
 }
